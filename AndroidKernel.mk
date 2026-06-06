@@ -111,8 +111,12 @@ ifeq ($(TARGET_KERNEL),$(current_dir))
 else
     # Legacy style, kernel source directly under kernel
     KERNEL_LEGACY_DIR := true
-    BUILD_ROOT_LOC := ../
-    TARGET_KERNEL_SOURCE := kernel
+    ifneq ($(TARGET_KERNEL_SOURCE),)
+        BUILD_ROOT_LOC := ../../../
+    else
+        BUILD_ROOT_LOC := ../
+        TARGET_KERNEL_SOURCE := kernel
+    endif
     KERNEL_OUT := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
     KERNEL_VM_OUT := $(TARGET_OUT_INTERMEDIATES)/KERNEL_VM_OBJ
 endif
