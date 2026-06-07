@@ -124,6 +124,8 @@ static int read_symbol(FILE *in, struct sym_entry *s)
 			fprintf(stderr, "Read error or end of file.\n");
 		return -1;
 	}
+	if (s->addr == 0)
+		return -1;
 	if (strlen(str) > KSYM_NAME_LEN) {
 		fprintf(stderr, "Symbol %s too long for kallsyms (%zu vs %d).\n"
 				"Please increase KSYM_NAME_LEN both in kernel and kallsyms.c\n",
@@ -333,7 +335,7 @@ static int expand_symbol(unsigned char *data, int len, char *result)
 
 static int symbol_absolute(struct sym_entry *s)
 {
-	return s->percpu_absolute;
+	return s->percpu_absolute || toupper(s->sym[0]) == 'A';
 }
 
 static void write_src(void)
@@ -747,7 +749,8 @@ static void record_relative_base(void)
 
 	relative_base = -1ULL;
 	for (i = 0; i < table_cnt; i++)
-		if (!symbol_absolute(&table[i]) &&
+		if (table[i].addr &&
+		    !symbol_absolute(&table[i]) &&
 		    table[i].addr < relative_base)
 			relative_base = table[i].addr;
 }
