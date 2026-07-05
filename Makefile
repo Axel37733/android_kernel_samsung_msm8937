@@ -376,7 +376,6 @@ AFLAGS_MODULE   =
 LDFLAGS_MODULE  =
 CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
-LD := /usr/bin/ld
 LDFLAGS_vmlinux =
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
@@ -858,9 +857,9 @@ KBUILD_CFLAGS   += $(call cc-option, -fno-var-tracking-assignments)
 
 ifdef CONFIG_DEBUG_INFO
 ifdef CONFIG_DEBUG_INFO_SPLIT
-KBUILD_CFLAGS   += $(call cc-option, -gsplit-dwarf, -g)
+KBUILD_CFLAGS   += $(call cc-option, -gsplit-dwarf, -gdwarf-4)
 else
-KBUILD_CFLAGS	+= -g
+KBUILD_CFLAGS	+= -gdwarf-4
 endif
 KBUILD_AFLAGS	+= -Wa,-gdwarf-2
 endif
@@ -991,16 +990,13 @@ endif
 LDFLAGS_BUILD_ID = $(patsubst -Wl$(comma)%,%,\
 			      $(call cc-ldoption, -Wl$(comma)--build-id,))
 KBUILD_LDFLAGS_MODULE += $(LDFLAGS_BUILD_ID)
-LD := /usr/bin/ld
 LDFLAGS_vmlinux += $(LDFLAGS_BUILD_ID)
 
 ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-LD := /usr/bin/ld
 LDFLAGS_vmlinux	+= $(call ld-option, --gc-sections,)
 endif
 
 ifeq ($(CONFIG_STRIP_ASM_SYMS),y)
-LD := /usr/bin/ld
 LDFLAGS_vmlinux	+= $(call ld-option, -X,)
 endif
 
