@@ -14,7 +14,7 @@ __headers:
 include scripts/Kbuild.include
 
 srcdir        := $(srctree)/$(obj)
-subdirs       := $(patsubst $(srcdir)/%/.,%,$(wildcard $(srcdir)/*/.))
+subdirs       := $(patsubst $(srcdir)/%/,%,$(wildcard $(srcdir)/*/))
 # caller may set destination dir (when installing to asm/)
 _dst          := $(if $(dst),$(dst),$(obj))
 

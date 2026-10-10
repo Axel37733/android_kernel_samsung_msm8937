@@ -207,7 +207,7 @@ static inline void kvm_set_s2pte_readonly(pte_t *pte)
 	"	stxr	%w1, %0, %2\n"
 	"	cbnz	%w1, 1b\n"
 	: "=&r" (pteval), "=&r" (tmp), "+Q" (pte_val(*pte))
-	: "L" (~PTE_S2_RDWR), "L" (PTE_S2_RDONLY));
+	: "r" (~PTE_S2_RDWR), "r" (PTE_S2_RDONLY));
 }
 
 static inline bool kvm_s2pte_readonly(pte_t *pte)

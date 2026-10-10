@@ -635,7 +635,7 @@ static inline int __ptep_test_and_clear_young(pte_t *ptep)
 	"	stxr	%w1, %0, %2\n"
 	"	cbnz	%w1, 1b\n"
 	: "=&r" (pteval), "=&r" (tmp), "+Q" (pte_val(*ptep)), "=&r" (res)
-	: "L" (~PTE_AF), "I" (ilog2(PTE_AF)));
+	: "r" (~PTE_AF), "I" (ilog2(PTE_AF)));
 
 	return res;
 }
@@ -703,7 +703,7 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
 	"	stxr	%w1, %0, %2\n"
 	"	cbnz	%w1, 1b\n"
 	: "=&r" (pteval), "=&r" (tmp), "+Q" (pte_val(*ptep))
-	: "r" (PTE_DIRTY|PTE_RDONLY), "L" (PTE_RDONLY), "L" (~PTE_WRITE)
+	: "r" (PTE_DIRTY|PTE_RDONLY), "r" (PTE_RDONLY), "r" (~PTE_WRITE)
 	: "cc");
 }
 

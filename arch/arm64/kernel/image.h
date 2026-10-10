@@ -44,8 +44,8 @@
 #endif
 
 #define DEFINE_IMAGE_LE64(sym, data)				\
-	sym##_lo32 = DATA_LE32((data) & 0xffffffff);		\
-	sym##_hi32 = DATA_LE32((data) >> 32)
+	sym##_lo32 = ABSOLUTE(DATA_LE32((data) & 0xffffffff));	\
+	sym##_hi32 = ABSOLUTE(DATA_LE32((data) >> 32))
 
 #ifdef CONFIG_CPU_BIG_ENDIAN
 #define __HEAD_FLAG_BE		1
